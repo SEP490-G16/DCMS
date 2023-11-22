@@ -1,0 +1,47 @@
+<div>
+  <button class="open-btn" (click)="chatContainerVisible = true"><i class="bi bi-messenger"></i></button>
+</div>
+
+<div class="chat-popup" id="chat-form-container" [style.display]="chatContainerVisible ? 'block' : 'none'">
+  <form action="" class="form-container">
+    <div class="chat-window-head">
+      <h4>Chat</h4>
+      <span class="close-btn" (click)="close()">
+        <i class="bi bi-x-circle"></i>
+      </span>
+    </div>
+
+    <div class="msg-container">
+      <div class="msg mt-2" *ngFor="let msg of receivedMessages" [ngClass]="{'sent-message': isSentMessage(msg.message['sub-id']), 'received-message': !isSentMessage(msg.message['sub-id'])}" style="display: flex" (mouseenter)="setHover(true)" (mouseleave)="setHover(false)">
+        <div [ngClass]="{'hovered': isHovered}" >
+          <div>
+            <b>{{msg.message.sender}}</b>
+          </div>
+          <div class="message-content">
+            <p>{{msg.message.content}}</p>
+          </div>
+            <span *ngIf="isHovered" class="timestamp">{{ msg.timestamp | date: 'hh:mm a' }}</span>
+        </div>
+      </div>
+    </div>
+      <!--<div class="msg mt-2" style="display: flex;float: right" (mouseenter)="setHover(true)" (mouseleave)="setHover(false)">
+        <div [ngClass]="{'hovered': isHovered}" >
+          <div>
+            <b>abc</b>
+          </div>
+          <div>
+            <p>abc</p>
+          </div>
+          <span *ngIf="isHovered" class="timestamp">abc</span>
+        </div>
+      </div>
+    </div>-->
+
+    <div class="chat-box-container">
+      <div class="chat-box">
+        <input type="text"  placeholder="Nhập tin nhắn" [(ngModel)]="messageContent" name="msg" required> <!---->
+        <button type="submit" class="btn" (click)="sendMessage()"> <!----><i class="bi bi-send" style="margin-right: 20px;"></i></button>
+      </div>
+    </div>
+  </form>
+</div>

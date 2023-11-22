@@ -1,0 +1,78 @@
+<div class="page-wrapper bg-wrapper">
+  <div class="content">
+    <div class="buy-form">
+      <div class="row">
+        <div class="col-md-2">
+          <a routerLink="/admin/material" class="page-title">Quản lý vật liệu</a>
+        </div>
+        <div class="col-md-2">
+          <a routerLink="/admin/material/approve-material" class="page-title">Vật liệu đang chờ duyệt</a>
+        </div>
+        <div class="col-md-2">
+          <a routerLink="/admin/material/import-material" class="page-title">Quản lý nhập</a>
+        </div>
+        <div class="col-md-2">
+          <a routerLink="/admin/material/export-material" class="page-title">Quản lý xuất</a>
+        </div>
+      </div>
+      <div class="row filter-row m-t-30">
+        <div class="col-md-3">
+          <div class="form-group form-group-filter">
+            <button href="add-employee.html" class="btn btn-custom float-right btn-rounded"  data-bs-toggle="modal" data-bs-target="#myModal"><i class="bi bi-plus-circle"></i> Thêm phiếu xuất
+            </button>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+          <div class="input-group">
+            <input
+              class="form-control"
+              placeholder="Ngày xuất"
+              name="dp"
+              [(ngModel)]="model"
+              ngbDatepicker
+              #d="ngbDatepicker"
+            />
+            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center rounded-3 overflow-hidden">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Ngày lập phiếu</th>
+                <th>Ghi chú</th>
+                <th style="min-width: 200px">Tổng tiền</th>
+                <th class="text-center">Thao tác</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td></td>
+                <td><a href="#" data-bs-toggle="modal" data-bs-target="#detailModal">10/10/2023</a></td>
+                <td>abc</td>
+                <td>25.000.000</td>
+                <td class="text-center">
+                  <button href="#" class="btn btn-primary float-right btn-rounded"><i class="bi bi-pencil-square"></i></button>
+                  <button href="#" class="btn btn-danger float-right btn-rounded" data-bs-toggle="modal" data-bs-target="#delete_bill_export"><i class="bi bi-trash"></i></button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-popup-add-bill-export-material></app-popup-add-bill-export-material>
+<app-popup-detail-bill-export-material></app-popup-detail-bill-export-material>
+<app-popup-delete-bill-export-material></app-popup-delete-bill-export-material>
+
+

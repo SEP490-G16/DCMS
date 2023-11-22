@@ -1,0 +1,58 @@
+<div class="recent-orders">
+  <section class="table__header">
+    <div class="col-4">
+      <button class="btn button-timekeeping" data-bs-toggle="modal" data-bs-target="#myBNModal"><i
+          class="bi bi-plus-circle"></i> Thêm
+        bệnh nhân</button>
+    </div>
+    <div class="input-group col-7">
+      <input type="search search-custom" [(ngModel)]="search" (keyup.enter)="searchPatient()"
+        placeholder="Tìm kiếm theo tên">
+    </div>
+    <div class="export__file">
+    </div>
+  </section>
+  <div class="table-container">
+    <table>
+      <thead class="sticky-thead">
+        <tr>
+          <th style="max-width: 50px;">Mã bệnh nhân</th>
+          <th>Tên bệnh nhân</th>
+          <th>SĐT</th>
+          <th>Địa chỉ</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of searchPatientsList" [ngClass]="{'new-record': p.isNew,'pulse': p.isPulsing}">
+          <td>
+            <!--HE153724-->{{p.patient_id}}
+          </td>
+          <td>
+            <a style="cursor: pointer;" (click)="detail(p.patient_id)">{{p.patient_name}}</a>
+          </td>
+          <td>
+            {{p.phone_number}}
+          </td>
+          <td>
+            {{p.address}}
+          </td>
+          <td>
+            <button href="#" class="btn btn-danger float-right btn-rounded" style="padding: 2px 5px"
+              data-bs-toggle="modal" data-bs-target="#delete_patient"
+              (click)="openDeletePatient(p.patient_id,searchPatientsList)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+  <div class="row mt-4">
+    <ngb-pagination [collectionSize]="pagingSearch.total" [(page)]="pagingSearch.paging" [boundaryLinks]="true"
+      (pageChange)="pageChanged($event)"></ngb-pagination>
+  </div>
+</div>
+<!-- End of Recent Orders -->
+<app-popup-add-patient [searchPatientsList]="searchPatientsList"></app-popup-add-patient>
+<app-popup-delete-patient [id]="[id]" [patientList]="searchPatientsList"></app-popup-delete-patient>

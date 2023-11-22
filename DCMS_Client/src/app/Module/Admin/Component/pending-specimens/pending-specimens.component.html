@@ -1,0 +1,72 @@
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-spinner"></div>
+</div>
+<div class="recent-orders">
+        <section class="table__header">
+          <h1></h1>
+          <div class="export__file">
+          </div>
+        </section>
+
+        <div class="row" style="margin-bottom: 20px; margin-left: 10px">
+          <div class="col-md-1">
+            <a routerLink="/admin/mau" routerLinkActive="active-link" class="page-title">Quản lý mẫu</a>
+          </div>
+          <div class="col-md-2">
+            <a routerLink="/admin/mau-dang-cho" routerLinkActive="active-link" class="page-title">Mẫu đang chờ duyệt</a>
+          </div>
+        </div>
+        <div class="row filter-row m-t-30">
+          <div class="col-sm-6 col-md-3">
+            <div class="form-group form-group-filter">
+              <button class="btn button-timekeeping float-right" data-bs-toggle="modal" data-bs-target="#addSpecimensModal"><i class="bi bi-plus-circle"></i> Thêm mới
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- <h2>Mẫu vật</h2> -->
+        <div class="table-container">
+          <table>
+            <thead class="sticky-thead">
+            <tr>
+              <th style="padding: 20px;">Mã mẫu</th> <!--1-->
+              <th style="min-width: 80px">Tên mẫu</th> <!--2-->
+              <th style="min-width: 82px">Tên bệnh nhân</th> <!--3-->
+              <th style="min-width: 85px">Chất liệu</th> <!--4-->
+              <th style="min-width: 75px">Số lượng</th> <!--5-->
+              <th style="min-width: 80px">Đơn giá</th> <!--6-->
+              <th style="min-width: 90px">Ngày lắp</th> <!--7-->
+              <th style="min-width: 75px">Thành tiền</th>
+              <th style="min-width: 101px">Thao tác</th> <!--14-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let m of approveSpecimensList">
+              <td style="padding: 20px;">{{m.ms_id}}</td>
+              <td class="truncate" data-bs-toggle="tooltip" title="{{m.ms_name}}" style="padding: 20px;">{{m.ms_name}}</td>
+              <td style="padding: 20px;">{{m.p_patient_name}}</td>
+              <td style="padding: 20px;">{{m.ms_type}}</td>
+              <td style="padding: 20px;">{{m.ms_quantity}}</td>
+              <td style="padding: 20px;">{{m.ms_unit_price}}</td>
+              <td style="padding: 20px;">{{ m.ms_used_date | date:'yyyy-MM-dd' }}</td>
+              <td style="padding: 20px;">{{ m.ms_quantity * m.ms_unit_price}}</td>
+              <td class="text-center" style="min-width: 150px">
+                <button href="#" class="btn btn-primary float-right btn-rounded" style="padding: 2px 5px; margin-right: 3px" (click)="approveSpecimens(m.ms_id,m)"><i class="bi bi-check-circle"></i></button>
+                <button href="#" class="btn btn-primary float-right btn-rounded"  style="padding: 2px 5px; margin-right: 3px" data-bs-toggle="modal" data-bs-target="#editApproveSpecimensModal" (click)="openEditApproveSpecimens(m.ms_id,m)"><i class="bi bi-pencil-square"></i></button>
+                <button href="#" class="btn btn-danger float-right btn-rounded" style="padding:2px 5px; " (click)="deleteApproveSpecimens(m.ms_id)"><i class="bi bi-trash"></i></button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+<app-popup-add-approve-specimens></app-popup-add-approve-specimens>
+<app-popup-add-specimens [approveSpecimensList]="approveSpecimensList"></app-popup-add-specimens>
+<app-popup-delete-specimens></app-popup-delete-specimens>
+<app-popup-edit-approve-specimens [approveSpecimensList]="approveSpecimensList" [id] = "id" [specimens] = "specimen"></app-popup-edit-approve-specimens>

@@ -1,0 +1,73 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+
+<div class="recent-orders">
+        <div class="row mt-5 mb-5">
+          <div class="col-3">
+
+          </div>
+          <div class="col-6">
+            <section class="table__header">
+              <h1></h1>
+              <div class="input-group">
+                <input type="search search-custom" placeholder="Tìm kiếm theo tên, email...">
+              </div>
+              <div class="export__file">
+              </div>
+            </section>
+          </div>
+          <div class="col-3">
+            <!-- <button class="btn btn-add-custom" data-bs-toggle="modal" data-bs-target="#myModal">Hiển thị</button> -->
+            <button class="btn button-timekeeping" data-bs-toggle="modal" data-bs-target="#myModal"><i
+                class="bi bi-plus-circle"></i> Thêm nhân viên</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="padding: 20px 0px;">Họ và tên</th>
+                <th style="padding: 20px 0px">Ngày sinh</th>
+                <th style="padding: 20px 0px">Giới tính</th>
+                <th style="padding: 20px 0px">SĐT</th>
+                <th style="padding: 20px 0px">Email</th>
+                <th style="padding: 20px 0px; min-width: 110px;">Địa chỉ</th>
+                <th style="padding: 20px 0px">Chức vụ</th>
+                <th style="padding: 20px 0px">Ghi chú</th>
+                <th style="padding: 20px 0px">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <tr>
+                    <td class="truncate" data-bs-toggle="tooltip"><!--HE153724--></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;"></td>
+                    <td style="padding: 20px 0px;">
+                      <button class="btn btn-primary" style="margin-right: 20px; padding: 2px 3px" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button class="btn btn-danger" style="padding: 2px 3px">
+                        <i class="bi bi-trash3"></i>
+                      </button>
+
+                    </td>
+                  </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+
+
+
+<!-- <app-popup-delete-staff></app-popup-delete-staff> -->
+<app-popup-add-staff></app-popup-add-staff>
+<app-popup-edit-staff></app-popup-edit-staff>

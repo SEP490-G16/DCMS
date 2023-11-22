@@ -1,0 +1,88 @@
+<div class="modal" id="AddTreatmentModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header color-main">
+        <h4 class="modal-title text-center w-100">Thêm liệu trình</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Mã bệnh nhân</label>
+                <input type="text" class="form-control" id="exampleInputEmail1"
+                [(ngModel)]="Patient_Id"
+                disabled
+                aria-describedby="emailHelp">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Tên Liệu trình</label>
+                <input type="text" class="form-control" id="exampleInputEmail1"
+                [(ngModel)]="Add_TreatmentCourse.name"
+                aria-describedby="emailHelp">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="treatmentSelect" class="form-label">Chọn liệu trình</label>
+                <select id="treatmentSelect" class="form-control" (change)="onProcedureSelectChange($event)">
+                  <option *ngFor="let procedure of ProcedureList" [value]="procedure.mp_id">{{ procedure.mp_name }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Thủ thuật đã thêm</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let selected of selectedItems; let i = index">
+                    <td>{{ selected.mp_name }}</td>
+                    <td>
+                      <button class="btn btn-danger btn-sm" (click)="deleteSelectedItem(i)">X</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Mô tả</label>
+                <input type="text" class="form-control" id="exampleInputEmail1"
+                [(ngModel)]="Add_TreatmentCourse.description"
+                aria-describedby="emailHelp">
+              </div>
+            </div>
+          </div>
+
+        <!-- Modal footer -->
+        <div class="button-conf float-end">
+          <button type="button" id="cancel" class="btn bg-white" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn" data-bs-dismiss="modal"
+            style="background-color: rgba(139, 55, 19,.95); color:white" (click)="addTreatmentCourse()">Lưu</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

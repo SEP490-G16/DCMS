@@ -1,0 +1,242 @@
+import { IUser } from './../Model/IUser';
+import { IStaff } from './../Model/IStaff';
+import { ICognitoUser } from './../Model/ICognitoUser';
+import { Injectable, EventEmitter } from '@angular/core';
+import { Amplify, Auth } from 'aws-amplify';
+import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { environment } from 'src/enviroments/enviroment.prod';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CognitoService {
+  private authenticationSubject: BehaviorSubject<any>;
+
+  cognitoUser: ICognitoUser;
+
+  constructor(private router: Router) {
+    this.cognitoUser = {} as ICognitoUser;
+
+    Amplify.configure({
+      Auth: environment.cognito
+    });
+
+    this.authenticationSubject = new BehaviorSubject<boolean>(false);
+
+  }
+
+  handlePostLoginRedirect(currentRoute: string): void {
+    const userGroupsString = sessionStorage.getItem('userGroups');
+    if (userGroupsString) {
+      const userGroups = JSON.parse(userGroupsString) as string[];
+
+      if (userGroups.includes('dev-dcms-doctor')) {
+        this.router.navigate(['/bacsi']);
+      } else if (userGroups.includes('dev-dcms-nurse')) {
+        this.router.navigate(['/yta']);
+      } else if (userGroups.includes('dev-dcms-receptionist')) {
+        this.router.navigate(['/letan']);
+      } else {
+        this.router.navigate(['/default-route']);
+      }
+    } else {
+      console.error('Không có thông tin về nhóm người dùng.');
+      this.router.navigate(['/default-route']);
+    }
+  }
+
+  getUserAttributes(): Promise<IStaff> {
+    return Auth.currentAuthenticatedUser()
+      .then((user: any) => {
+        return Auth.userAttributes(user);
+      })
+      .then((attributes: any) => {
+        let userAttributes: Partial<IStaff> = {};
+        attributes.forEach((attribute: any) => {
+          const key = attribute.Name as keyof IStaff;
+          userAttributes[key] = attribute.Value as any;
+        });
+        return userAttributes as IStaff;
+      })
+      .catch((error: any) => {
+        console.error("Error fetching user attributes", error);
+        throw error;
+      });
+  }
+
+
+  addStaff(User: IStaff): Promise<any> {
+    const attributes = {
+      email: User.email,
+      phone_number: User.phone,
+      name: User.name,
+      gender: User.gender,
+      address: User.address,
+      'custom:DOB': User.DOB,
+      'custom:description': User.description,
+      'custom:status': User.status,
+      'custom:image': User.image,
+      'custom:role': User.role
+    };
+
+    return Auth.signUp({
+      username: User.username,
+      password: User.password,
+      attributes, // Các thuộc tính tùy chỉnh và các thuộc tính tiêu chuẩn
+    });
+  }
+
+  updateUserAttributes(userId: string, userData: any): Promise<any> {
+
+    const attributes = {
+      email: userData.email,
+      phone_number: userData.phone,
+      name: userData.name,
+      gender: userData.gender,
+      address: userData.address,
+      'custom:DOB': userData.DOB,
+      'custom:description': userData.description,
+      'custom:status': userData.status,
+      'custom:image': userData.image,
+    };
+
+    return Auth.updateUserAttributes(userId, attributes)
+      .then((result) => {
+        console.log('Cập nhật thông tin người dùng thành công:', result);
+        return result;
+      })
+      .catch((error) => {
+        console.error('Lỗi cập nhật thông tin người dùng:', error);
+        throw error;
+      });
+  }
+
+  updateUserAttributesOpt2(attributes: { [key: string]: string }): Promise<void> {
+    return Auth.currentAuthenticatedUser()
+      .then(user => Auth.updateUserAttributes(user, attributes))
+      .then(() => void 0);
+  }
+
+
+  signIn(User: IUser): Promise<any> {
+    return Auth.signIn(User.userCredential, User.password).then((userResult) => {
+
+      console.log("User result:", userResult);
+      this.cognitoUser.Username = userResult.username;
+      this.cognitoUser.Email = userResult.attributes.email;
+      this.cognitoUser.ClientId = userResult.pool.clientId;
+      this.cognitoUser.idToken = userResult.signInUserSession.idToken.jwtToken;
+      this.cognitoUser.refreshToken = userResult.signInUserSession.refreshToken.token;
+      this.cognitoUser.locale = userResult.attributes.locale;
+      this.cognitoUser.sub = userResult.attributes.sub;
+      console.log("CognitoUser: ", this.cognitoUser);
+      sessionStorage.setItem('cognitoUser', JSON.stringify(this.cognitoUser));
+      //
+      const groups = userResult.signInUserSession.idToken.payload['cognito:groups'];
+      console.log('User Groups:', groups);
+      sessionStorage.setItem('userGroups', JSON.stringify(groups));
+
+
+      sessionStorage.setItem('id_Token', this.cognitoUser.idToken);
+      sessionStorage.setItem('locale', this.cognitoUser.locale);
+      sessionStorage.setItem('sub', this.cognitoUser.sub);
+      sessionStorage.setItem('name', this.cognitoUser.name);
+      sessionStorage.setItem('sub-id', this.cognitoUser.sub);
+      sessionStorage.setItem('username', this.cognitoUser.Username);
+    });
+  }
+
+
+  getRole(): Promise<any> {
+    return this.getUser().then((user) => {
+      return user && user.attributes ? user.attribute['custom:role'] : '';
+    })
+  }
+
+  // async listUsers() {
+  //   const params = {
+  //     UserPoolId: environment.cognito.userPoolId // Thay thế bằng ID của User Pool của bạn
+  //   };
+  //   try {
+  //     const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+  //     const users = await cognitoidentityserviceprovider.listUsers(params).promise();
+  //     // Xử lý danh sách người dùng ở đây
+  //     console.log(users);
+  //     return users;
+  //   } catch (error) {
+  //     console.error('Error fetching users', error);
+  //     throw error;
+  //   }
+  // }
+
+
+
+  signOut(): Promise<any> {
+    return Auth.signOut().then(() => {
+      this.authenticationSubject.next(false);
+    });;
+  }
+
+  refreshToken(): Promise<string> {
+    if (!this.cognitoUser) {
+      return Promise.reject('User is not authenticated');
+    }
+
+    return Auth.currentSession()
+      .then((session) => {
+        const accessToken = session.getAccessToken();
+        const newAccessToken = accessToken.getJwtToken();
+        sessionStorage.setItem('id_Token', newAccessToken);
+        return newAccessToken;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+  changePassword(oldPassword: string, newPassword: string): Promise<void> {
+    return Auth.currentAuthenticatedUser()
+      .then(user => {
+        return Auth.changePassword(user, oldPassword, newPassword);
+      })
+      .then(() => void 0);
+  }
+
+  public isAuthenticated(): Promise<boolean> {
+    if (this.authenticationSubject.value) {
+      return Promise.resolve(true);
+    } else {
+      return this.getUser()
+        .then((user: any) => {
+          if (user) {
+            return true;
+          } else {
+            return false;
+          }
+        }).catch(() => {
+          return false;
+        });
+    }
+  }
+
+  public getUser(): Promise<any> {
+    return Auth.currentUserInfo();
+  }
+
+  public updateUser(user: IUser): Promise<any> {
+    return Auth.currentUserPoolUser()
+      .then((cognitoUser: any) => {
+        return Auth.updateUserAttributes(cognitoUser, user);
+      });
+  }
+
+  forgotPassword(User: IUser): Promise<any> {
+    return Auth.forgotPassword(User.userCredential);
+  }
+
+  forgotPasswordSubmit(User: IUser, new_password: string): Promise<any> {
+    return Auth.forgotPasswordSubmit(User.userCredential, User.code, new_password);
+  }
+
+}

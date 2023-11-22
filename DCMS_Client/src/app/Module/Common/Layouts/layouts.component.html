@@ -1,0 +1,211 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+
+<div class="web-wrapper">
+  <div class="container-custom">
+    <!-- Sidebar Section -->
+    <aside>
+
+      <div class="sidebar">
+        <div class="toggle">
+          <div class="logo">
+            <img
+            src="https://th.bing.com/th/id/OIP.PyiEHrWlKwS5pPYZl98plgAAAA?pid=ImgDet&rs=1">
+            <h2 style="font-family:Agbalumo;">Nguyen Tran</h2> Clinic
+          </div>
+          <div class="close" id="close-btn">
+            <span class="material-icons-sharp">
+              close
+            </span>
+          </div>
+        </div>
+        <a routerLink="/letan/lich-hen" routerLinkActive="active">
+          <span>
+            <i class="bi bi-calendar-check"></i>
+          </span>
+          <h3>Lịch hẹn</h3>
+        </a>
+        <a routerLink="/letan/phong-cho" routerLinkActive="active">
+          <span>
+            <i class="bi bi-house-heart"></i>
+          </span>
+          <h3>Phòng chờ</h3>
+        </a>
+        <a routerLink="/benhnhan/danhsach" routerLinkActive="active">
+          <span>
+            <i class="bi bi-person-lines-fill"></i>
+          </span>
+          <h3>Bệnh nhân</h3>
+        </a>
+        <a routerLink="/letan/cham-cong" routerLinkActive="active">
+          <span>
+            <i class="bi bi-calendar3"></i>
+          </span>
+          <h3>Chấm công</h3>
+        </a>
+        <span *ngIf="userGroupString === compareUserGroup">
+          <a routerLink="/admin/thu-thuat" routerLinkActive="active">
+            <span>
+              <i class="bi bi-clipboard2-pulse"></i>
+            </span>
+            <h3>Thủ thuật</h3>
+          </a>
+          <a routerLink="/letan/theo-doi-cham-cong" routerLinkActive="active">
+            <span class="material-icons-sharp">
+              receipt_long
+            </span>
+            <h3> Theo dõi chấm công</h3>
+          </a>
+          <a routerLink="/admin/nhan-vien" routerLinkActive="active">
+            <span class="material-icons-sharp">
+              person_outline
+            </span>
+            <h3>Nhân viên</h3>
+          </a>
+          <a routerLink="/admin/labo" routerLinkActive="active">
+            <span>
+              <i class="bi bi-house-door"></i>
+            </span>
+            <h3>Labo</h3>
+          </a>
+          <a routerLink="/admin/mau" routerLinkActive="active">
+            <span>
+              <i class="bi bi-file-medical"></i>
+            </span>
+            <h3>Mẫu</h3>
+          </a>
+          <a routerLink="/admin/vat-lieu" routerLinkActive="active">
+            <span>
+              <i class="bi bi-prescription2"></i>
+            </span>
+            <h3>Vật liệu</h3>
+          </a>
+          <a routerLink="/admin/co-so" routerLinkActive="active">
+            <span>
+              <i class="bi bi-houses"></i>
+            </span>
+            <h3>Cơ sở</h3>
+          </a>
+        </span>
+        <a (click)="signOut()" style="cursor:pointer;">
+          <span class="material-icons-sharp">
+            logout
+          </span>
+          <h3>Logout</h3>
+        </a>
+      </div>
+    </aside>
+    <!-- End of Sidebar Section -->
+
+    <!-- Main Content -->
+    <main>
+      <!-- Analyses -->
+      <div class="analyse">
+        <div class="sales">
+          <div class="status">
+            <div class="info">
+              <h3>Lịch hẹn</h3>
+              <h1 class="text-center">02</h1>
+            </div>
+            <div class="progresss">
+              <svg>
+                <circle cx="38" cy="38" r="36"></circle>
+              </svg>
+              <div class="percentage">
+                <i class="bi bi-calendar3"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="visits">
+          <div class="status">
+            <div class="info">
+              <h3>Phòng chờ</h3>
+              <h1 class="text-center">24</h1>
+            </div>
+            <div class="progresss">
+              <svg>
+                <circle cx="38" cy="38" r="36"></circle>
+              </svg>
+              <div class="percentage">
+                <i class="bi bi-houses"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="searches">
+          <div class="status">
+            <div class="info">
+              <h3>Bệnh nhân</h3>
+              <h1 class="text-center">23</h1>
+            </div>
+            <div class="progresss">
+              <svg>
+                <circle cx="38" cy="38" r="36"></circle>
+              </svg>
+              <div class="percentage">
+                <i class="bi bi-person-standing"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile">
+          <div class="icon">
+            <select style="border: 1px solid #000; border-radius: 20px;">
+              <option value="">Cơ sở 1</option>
+              <option value="">Cơ sở 2</option>
+              <option value="">Cơ sở 3</option>
+            </select>
+          </div>
+          <div class="info">
+            <p>Xin chào, <b>Linh</b></p>
+            <small class="text-muted">Lễ tân</small>
+          </div>
+          <div class="profile-photo">
+            <img src="../../../../assets/img/person.png" routerLink="/suahoso">
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+
+      <!--Chat-->
+      <!-- <div>
+        <button class="open-btn" (click)="chatContainerVisible = true"><i class="bi bi-messenger"></i></button>
+      </div>
+
+      <div class="chat-popup" id="chat-form-container" [style.display]="chatContainerVisible ? 'block' : 'none'">
+        <form action="" class="form-container">
+          <div class="chat-window-head">
+            <h4>Chat</h4>
+            <span class="close-btn" (click)="chatContainerVisible = false">
+              <i class="bi bi-x-circle"></i>
+            </span>
+          </div>
+
+          <div class="msg-container">
+            <div class="msg">
+              <p>hello!!!!!</p>
+              <span>00:30 AM</span>
+            </div>
+          </div>
+
+          <div class="chat-box-container">
+            <div class="chat-box">
+              <input type="text" placeholder="Nhập tin nhắn" name="msg" required>
+              <button type="submit" class="btn"><i class="bi bi-send" style="margin-right: 20px;"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>-->
+      <app-chat></app-chat>
+
+    </main>
+    <!-- End of Main Content -->
+
+  </div>
+</div>

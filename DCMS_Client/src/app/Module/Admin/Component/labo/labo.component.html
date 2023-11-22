@@ -1,0 +1,67 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Agbalumo&display=swap" rel="stylesheet">
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-spinner"></div>
+</div>
+<div class="recent-orders">
+  <section class="table__header">
+    <h1></h1>
+    <div class="export__file">
+    </div>
+  </section>
+  <div class="row mt-5">
+    <div class="col-6">
+      <div class="form-group form-group-filter">
+        <button class="btn button-timekeeping" data-bs-toggle="modal" data-bs-target="#myModal"><i
+            class="bi bi-plus-circle"></i> Thêm mới
+          labo</button>
+      </div>
+    </div>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead class="sticky-thead">
+        <tr>
+          <th style="padding: 10px">Mã labo</th>
+          <th style="padding: 10px" class="truncate">Tên labo</th>
+          <th style="padding: 10px">Địa chỉ</th>
+          <th style="padding: 10px">Số điện thoại</th>
+          <th style="padding: 10px">Email</th>
+          <th style="padding: 10px" class="text-center">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let labo of Labos">
+          <td style="padding: 10px">{{labo.labo_id}}</td>
+          <td class="truncate" data-bs-toggle="tooltip" title="{{ labo.name }}">{{labo.name}}</td>
+          <td style="padding: 10px">{{labo.address}}</td>
+          <td style="padding: 10px">{{labo.phone_number}}</td>
+          <td style="padding: 10px">{{labo.email}}</td>
+          <td style="padding: 10px">
+            <button class="btn btn-primary p-1 m-r-3" style="padding: 2px 3px; margin-right: 3px" data-bs-toggle="modal"
+              data-bs-target="#myEditModal" (click)="openEditModal(labo)">
+              <i class="bi bi-pencil-square"></i></button>
+            <button class="btn btn-danger p-1" style="padding: 2px 5px" (click)="deleteLabo(labo.labo_id)"> <i
+                class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- End of Recent Orders -->
+
+<!--</main>
+    &lt;!&ndash; End of Main Content &ndash;&gt;
+
+
+
+  </div>
+
+</div>-->
+
+<app-popup-add-labo></app-popup-add-labo>
+<app-popup-edit-labo [LaboEdit]="LaboEdit"></app-popup-edit-labo>
+<app-popup-delete-labo [LaboId]="LaboId"></app-popup-delete-labo>
